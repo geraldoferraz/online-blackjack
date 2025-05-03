@@ -117,20 +117,71 @@
         }
         
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 25px;
+            position: relative;
         }
         
         .input-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            color: #ecf0f1;
+            font-weight: 500;
+            font-size: 1.1em;
         }
         
         .input-group input, .input-group select {
             width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #ecf0f1;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #2ecc71;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .input-group input::placeholder {
+            color: rgba(236, 240, 241, 0.6);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ecf0f1;
+            font-size: 1.8em;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #2ecc71;
+            border-radius: 3px;
+        }
+        
+        .join-room {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .join-room h3 {
+            text-align: center;
+            color: #ecf0f1;
+            margin-bottom: 20px;
+            font-size: 1.4em;
         }
         
         #scoreboard {
@@ -274,6 +325,16 @@
             padding: 15px 30px;
             font-size: 18px;
         }
+
+        .game-setup, .online-section {
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body>
@@ -281,57 +342,41 @@
         <!-- Tela inicial -->
         <div id="start-screen" class="screen active">
             <h1>Blackjack Online</h1>
-            
-            <!-- Seção Online -->
-            <div class="online-section">
-                <h2>Jogar Online</h2>
-                <div class="online-options">
-                    <div class="input-group">
-                        <label for="player-name">Seu Nome:</label>
-                        <input type="text" id="player-name" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="online-player-count">Número de Jogadores (2-4):</label>
-                        <input type="number" id="online-player-count" min="2" max="4" value="2">
-                    </div>
-                    <div class="input-group">
-                        <label for="online-rounds">Número de Rodadas (mín. 3):</label>
-                        <input type="number" id="online-rounds" min="3" value="3">
-                    </div>
-                    <div class="input-group">
-                        <label for="online-timeout">Tempo por jogada (segundos):</label>
-                        <input type="number" id="online-timeout" min="10" value="30">
-                    </div>
-                    <button id="create-room" class="btn-primary">Criar Sala</button>
-                    <div class="join-room">
-                        <div class="input-group">
-                            <label for="room-id">Código da Sala:</label>
-                            <input type="text" id="room-id" placeholder="Digite o código da sala">
-                        </div>
-                        <button id="join-room" class="btn-primary">Entrar na Sala</button>
-                    </div>
+
+            <!-- Nome do Jogador -->
+            <div class="game-setup">
+                <h2 class="section-title">Seu Nome</h2>
+                <div class="input-group">
+                    <input type="text" id="player-name" placeholder="Digite seu nome" required>
                 </div>
             </div>
 
-            <!-- Seção Local -->
+            <!-- Seção Entrar em Sala -->
             <div class="game-setup">
-                <h2>Jogar Localmente</h2>
+                <h2 class="section-title">Entrar em uma Sala</h2>
                 <div class="input-group">
-                    <label for="player-count">Número de Jogadores (2-4):</label>
-                    <input type="number" id="player-count" min="2" max="4" value="2">
+                    <label for="room-id">Código da Sala</label>
+                    <input type="text" id="room-id" placeholder="Digite o código da sala">
+                </div>
+                <button id="join-room" class="btn-primary">Entrar na Sala</button>
+            </div>
+
+            <!-- Seção Criar Sala -->
+            <div class="game-setup">
+                <h2 class="section-title">Criar uma Sala</h2>
+                <div class="input-group">
+                    <label for="online-player-count">Número de Jogadores</label>
+                    <input type="number" id="online-player-count" min="2" max="4" value="2" placeholder="2-4 jogadores">
                 </div>
                 <div class="input-group">
-                    <label for="rounds">Número de Rodadas (mín. 3):</label>
-                    <input type="number" id="rounds" min="3" value="3">
+                    <label for="online-rounds">Número de Rodadas</label>
+                    <input type="number" id="online-rounds" min="3" value="3" placeholder="Mínimo 3 rodadas">
                 </div>
                 <div class="input-group">
-                    <label for="timeout">Tempo por jogada (segundos):</label>
-                    <input type="number" id="timeout" min="10" value="30">
+                    <label for="online-timeout">Tempo por Jogada</label>
+                    <input type="number" id="online-timeout" min="10" value="30" placeholder="Em segundos">
                 </div>
-                <div id="player-names-container">
-                    <!-- Player name inputs will be added here dynamically -->
-                </div>
-                <button id="start-game" class="btn-primary">Iniciar Jogo</button>
+                <button id="create-room" class="btn-primary">Criar Sala</button>
             </div>
         </div>
 
